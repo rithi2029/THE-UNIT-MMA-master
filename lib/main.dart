@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:unitmma/scaffold/scaffold.dart';
+import 'package:unitmma/screens/home_screen/home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,12 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Scaffold(
-        body: Container(
-          padding: const EdgeInsets.all(10.0),
-          child: const Text("hi i am rithi mahesh kumar"),
-        ),
-      ),
+      home: ScaffoldScreen(),
     );
   }
 }
