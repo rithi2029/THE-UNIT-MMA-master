@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'package:flutter/material.dart';
 import 'package:unitmma/constant_widgets/app_bar.dart';
 import 'package:unitmma/scaffold/scaffold.dart';
@@ -16,31 +18,77 @@ class BookingScreen extends StatelessWidget {
     final scaffoldHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: appBar,
-      body: SizedBox(
-        width: scaffoldWidth,
-        height: scaffoldHeight,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                width: scaffoldWidth,
-                height: scaffoldHeight * 0.3,
-                child: const Cards(
-                  url:
-                      "https://theunitmma.co.uk/wp-content/uploads/2022/02/IMG_9633-scaled.jpg",
-                ),
+      // ignore: prefer_const_constructors
+      body: Column(
+        children: [
+          Container(
+            color: GlobalVariables.baseColor,
+            width: scaffoldWidth,
+            height: scaffoldHeight * 0.06,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => ScaffoldScreen(),
+                        ),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.arrow_back_rounded,
+                      color: GlobalVariables.white,
+                    ),
+                  ),
+                  const Text(
+                    "Booking",
+                    style: TextStyle(
+                        color: GlobalVariables.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                  )
+                ],
               ),
-              SizedBox(
-                width: scaffoldWidth,
-                height: scaffoldHeight * 10,
-                child: const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: MyWidget(),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
+          Container(
+            width: scaffoldWidth,
+            height: scaffoldHeight * 0.1,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                  children: [
+                    Container(
+                      child: IconButton(
+                        iconSize: 35,
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.calendar_month,
+                        ),
+                      ),
+                    ),
+                    const Text("Booking")
+                  ],
+                ),
+                Column(
+                  children: [
+                    IconButton(
+                      iconSize: 35,
+                      onPressed: () {},
+                      icon: const Icon(Icons.timer_off),
+                    ),
+                    const Text("Past")
+                  ],
+                ),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
