@@ -1,0 +1,11 @@
+{
+    "editor.cursorBlinking": "expand",
+    "editor.cursorStyle": "line",
+    "terminal.integrated.cursorStyle": "line",
+    "editor.cursorSmoothCaretAnimation": true,
+    "editor.smoothScrolling": true,
+    "workbench.list.smoothScrolling": true,
+    "terminal.integrated.cursorBlinking": true,
+    "editor.multiCursorModifier": "alt",
+    "editor.multiCursorPaste": "full"
+}
