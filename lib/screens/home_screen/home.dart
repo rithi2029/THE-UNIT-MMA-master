@@ -2,6 +2,8 @@
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:unitmma/constants/global_variables.dart';
+import 'package:unitmma/screens/about_screen/about.dart';
 import 'package:unitmma/screens/product_screen/product.dart';
 
 import '../../constant_widgets/app_bar.dart';
@@ -28,6 +30,76 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: appBar,
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              margin: EdgeInsets.all(0),
+              decoration: BoxDecoration(),
+              child: ClipRRect(
+                child: Image(
+                    fit: BoxFit.fill,
+                    image: NetworkImage(
+                      "https://theunitmma.co.uk/wp-content/uploads/2021/09/cropped-the-unit-mixed-martial-arts.jpg",
+                    )),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.home),
+              title: Text('Home'),
+            ),
+            ListTile(
+              leading: Icon(Icons.info),
+              title: Text('About'),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => AboutScreen(),
+                  ),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.history),
+              title: Text('Order History'),
+            ),
+            ListTile(
+              leading: Icon(Icons.star_border),
+              title: Text('Subscription Details'),
+            ),
+            ListTile(
+              leading: Icon(Icons.logout_outlined),
+              title: Text('Logout'),
+            ),
+            ExpansionTile(
+              title: Text('By Category'),
+              controlAffinity: ListTileControlAffinity.trailing,
+              children: <Widget>[
+                ListTile(
+                  leading: Icon(Icons.class_),
+                  title: Text('Classes'),
+                ),
+                ListTile(
+                  leading: Icon(Icons.card_membership),
+                  title: Text('Membership'),
+                ),
+                ListTile(
+                  leading: Icon(Icons.production_quantity_limits_outlined),
+                  title: Text('Product'),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => ProductScreen(),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
       body: Container(
         width: scaffoldWidth,
         height: scaffoldHeight,
@@ -72,7 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   HomeCards(
                     url:
                         "https://theunitmma.co.uk/wp-content/uploads/2022/02/IMG_0693-1.jpg",
-                    height: scaffoldHeight * 0.25,
+                    height: scaffoldHeight * 0.35,
                     width: scaffoldWidth,
                     title: "Classes",
                     routing: () {},
@@ -80,7 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   HomeCards(
                     url:
                         "https://theunitmma.co.uk/wp-content/uploads/2022/02/IMG_0005-2-scaled.jpg",
-                    height: scaffoldHeight * 0.25,
+                    height: scaffoldHeight * 0.35,
                     width: scaffoldWidth,
                     title: "Membership",
                     routing: () {},
@@ -88,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   HomeCards(
                     url:
                         "https://theunitmma.co.uk/wp-content/uploads/2022/02/Kids-Class-Pose-1-scaled.jpg",
-                    height: scaffoldHeight * 0.25,
+                    height: scaffoldHeight * 0.35,
                     width: scaffoldWidth,
                     title: "Products",
                     routing: () {

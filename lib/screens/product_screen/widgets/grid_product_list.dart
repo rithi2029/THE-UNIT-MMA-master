@@ -4,10 +4,25 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:unitmma/api/api_call.dart';
+import 'package:unitmma/model/product_model.dart';
 import 'package:woocommerce_api/woocommerce_api.dart';
 
-class MyWidget extends StatelessWidget {
+class MyWidget extends StatefulWidget {
   const MyWidget({Key? key}) : super(key: key);
+
+  @override
+  State<MyWidget> createState() => _MyWidgetState();
+}
+
+class _MyWidgetState extends State<MyWidget> {
+  late Product product;
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +54,7 @@ class MyWidget extends StatelessWidget {
                   childAspectRatio: 2 / 3,
                   crossAxisSpacing: 20,
                   mainAxisSpacing: 20),
-              itemCount: 10,
+              itemCount: 2,
               itemBuilder: (BuildContext ctx, index) {
                 return Container(
                   alignment: Alignment.center,
@@ -53,17 +68,7 @@ class MyWidget extends StatelessWidget {
                         height: constraints.maxHeight,
                         child: Column(
                           children: [
-                            Container(
-                              width: constraints.maxWidth,
-                              height: constraints.maxHeight * 0.7,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(0),
-                                child: Image(
-                                  image: NetworkImage(
-                                      snapshot.data[index]["images"][0]["src"]),
-                                ),
-                              ),
-                            ),
+                            // Image(),
                             Text(snapshot.data[index]["name"].toString()),
                             Row(
                               children: [

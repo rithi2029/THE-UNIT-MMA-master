@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:unitmma/scaffold/scaffold.dart';
+import 'package:unitmma/screens/Auth/signin/signin.dart';
+import 'package:unitmma/screens/Auth/signup/signup.dart';
 import 'package:unitmma/screens/home_screen/home.dart';
 
 void main() {
@@ -18,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: ScaffoldScreen(),
+      home: SignInScreen(),
     );
   }
 }

@@ -20,10 +20,7 @@ class HomeCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        routing();
-      },
+    return Container(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -55,16 +52,69 @@ class HomeCards extends StatelessWidget {
               ],
             ),
             Container(
-              height: height,
-              width: double.infinity,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(url),
-                ),
-              ),
-            ),
+                height: height,
+                width: width,
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 6,
+                    itemBuilder: ((context, index) {
+                      return Container(
+                        margin: EdgeInsets.only(
+                            top: width * 0.01, left: width * 0.01),
+                        width: width * 0.47,
+                        padding: EdgeInsets.all(width * 0.02),
+                        height: height,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                                color: Color.fromARGB(255, 219, 212, 212),
+                                width: 1,
+                                style: BorderStyle.solid)),
+                        child: Column(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image(
+                                width: double.infinity,
+                                height: height * 0.5,
+                                fit: BoxFit.fill,
+                                image: NetworkImage(url),
+                              ),
+                            ),
+                            Container(
+                              margin:
+                                  EdgeInsets.symmetric(vertical: height * 0.04),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Text(
+                                    "AdultKick Boxing",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: GlobalVariables.baseColor,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Text(
+                                    "Price:20",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: GlobalVariables.black,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }))),
             Container()
           ],
         ),

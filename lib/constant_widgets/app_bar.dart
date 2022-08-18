@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:unitmma/constants/global_variables.dart';
 
 var appBar = AppBar(
-  leading: const Icon(
-    Icons.menu,
-    color: GlobalVariables.baseColor,
-  ),
+  iconTheme: IconThemeData(color: GlobalVariables.baseColor),
+  // leading: const Icon(
+  //   Icons.menu,
+  //   color: GlobalVariables.baseColor,
+  // ),
   actions: [
     Container(
       width: 100,
@@ -28,12 +29,14 @@ var appBar = AppBar(
     ),
   ],
   backgroundColor: GlobalVariables.white,
-  title: const Image(
-    width: 200,
-    height: 50,
-    image: NetworkImage(
-        "https://theunitmma.co.uk/wp-content/uploads/2021/09/cropped-the-unit-mixed-martial-arts.jpg",
-        scale: 0.5),
+  title: GestureDetector(
+    child: const Image(
+      width: 200,
+      height: 50,
+      image: NetworkImage(
+          "https://theunitmma.co.uk/wp-content/uploads/2021/09/cropped-the-unit-mixed-martial-arts.jpg",
+          scale: 0.5),
+    ),
   ),
   centerTitle: true,
 );

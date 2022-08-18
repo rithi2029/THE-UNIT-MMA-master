@@ -4,9 +4,7 @@ import 'package:unitmma/screens/home_screen/home.dart';
 import 'package:unitmma/screens/membership_screen/membership.dart';
 import 'package:unitmma/screens/news_screen/news.dart';
 import 'package:unitmma/screens/product_screen/product.dart';
-import 'package:unitmma/screens/shop_screen/shop.dart';
 
-import '../../constant_widgets/app_bar.dart';
 import '../screens/booking_screen/booking.dart';
 
 class ScaffoldScreen extends StatefulWidget {
