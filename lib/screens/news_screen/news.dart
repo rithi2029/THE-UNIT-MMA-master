@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:unitmma/constant_widgets/app_bar.dart';
 import 'package:unitmma/scaffold/scaffold.dart';
 import 'package:unitmma/screens/home_screen/home.dart';
+import 'package:unitmma/screens/news_screen/widget/newa_list.dart';
 import 'package:unitmma/screens/product_screen/widgets/card.dart';
 import 'package:unitmma/screens/product_screen/widgets/grid_product_list.dart';
 
@@ -54,6 +55,7 @@ class NewsScreen extends StatelessWidget {
               ),
             ),
           ),
+          NewsList(),
         ],
       ),
     );

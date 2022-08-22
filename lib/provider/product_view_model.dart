@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -7,19 +8,11 @@ import 'package:unitmma/model/product_model.dart';
 import '../api/api_call.dart';
 
 class ProductViewModel extends ChangeNotifier {
-  late Product _product;
+  Product? post;
+  bool loading = false;
 
-  Product get product => _product;
-
-  Future<void> getProductList() async {
-    CommonUtils().getInternetAction().then((value) {
-      if (value) {}
-    });
-
-    APICall().getProducts().then((value) {
-      if (value.statusCode == 200) {
-        _product = Product.fromJson(json.decode());
-      }
-    });
+  getPostData() async {
+    loading = true;
+    post = (await APICall().getProducts());
   }
 }

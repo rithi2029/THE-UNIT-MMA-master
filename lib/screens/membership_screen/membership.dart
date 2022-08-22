@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:unitmma/constants/global_variables.dart';
 import 'package:unitmma/scaffold/scaffold.dart';
-import 'package:unitmma/screens/home_screen/home.dart';
-import 'package:unitmma/screens/product_screen/widgets/card.dart';
-import 'package:unitmma/screens/product_screen/widgets/grid_product_list.dart';
-
-import '../../constants/global_variables.dart';
+import 'package:unitmma/screens/membership_screen/widget/member_ship_widget.dart';
 
 class MembershipScreen extends StatelessWidget {
   const MembershipScreen({Key? key}) : super(key: key);
@@ -30,7 +27,6 @@ class MembershipScreen extends StatelessWidget {
         ),
         actions: [
           Container(
-            width: 100,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -57,24 +53,15 @@ class MembershipScreen extends StatelessWidget {
       ),
       body: SizedBox(
         width: scaffoldWidth,
-        height: scaffoldHeight,
         child: SingleChildScrollView(
           child: Column(
             children: [
               SizedBox(
                 width: scaffoldWidth,
-                height: scaffoldHeight * 0.3,
-                child: const Cards(
-                  url:
-                      "https://theunitmma.co.uk/wp-content/uploads/2022/02/IMG_9633-scaled.jpg",
-                ),
-              ),
-              SizedBox(
-                width: scaffoldWidth,
-                height: scaffoldHeight * 10,
+                height: scaffoldHeight * 1,
                 child: const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: MyWidget(),
+                  padding: EdgeInsets.all(20.0),
+                  child: MemberShipWigdet(),
                 ),
               ),
             ],

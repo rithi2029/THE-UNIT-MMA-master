@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:unitmma/provider/product_view_model.dart';
 import 'package:unitmma/scaffold/scaffold.dart';
 import 'package:unitmma/screens/Auth/signin/signin.dart';
 import 'package:unitmma/screens/Auth/signup/signup.dart';
 import 'package:unitmma/screens/home_screen/home.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (context) => ProductViewModel())
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

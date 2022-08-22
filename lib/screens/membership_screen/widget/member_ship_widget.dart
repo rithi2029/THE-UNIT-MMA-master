@@ -8,14 +8,14 @@ import "package:http/http.dart" as http;
 import 'package:unitmma/constants/global_variables.dart';
 import 'package:unitmma/screens/product_detail_screen/single_product_screen.dart';
 
-class MyWidget extends StatefulWidget {
-  const MyWidget({Key? key}) : super(key: key);
+class MemberShipWigdet extends StatefulWidget {
+  const MemberShipWigdet({Key? key}) : super(key: key);
 
   @override
-  State<MyWidget> createState() => _MyWidgetState();
+  State<MemberShipWigdet> createState() => _MemberShipWigdetState();
 }
 
-class _MyWidgetState extends State<MyWidget> {
+class _MemberShipWigdetState extends State<MemberShipWigdet> {
   @override
   Widget build(BuildContext context) {
     Map<String, String> headers = {"Content-Type": "application/json"};
@@ -116,7 +116,7 @@ class _MyWidgetState extends State<MyWidget> {
                                   style: ElevatedButton.styleFrom(
                                       primary: GlobalVariables.baseColor,
                                       onPrimary: GlobalVariables.white),
-                                  child: const Text("Add to cart"),
+                                  child: const Text("Subscribe"),
                                 ),
                               ],
                             ),
