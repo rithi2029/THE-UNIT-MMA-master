@@ -2,8 +2,11 @@
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unitmma/constants/global_variables.dart';
+import 'package:unitmma/screens/Auth/signin/signin.dart';
 import 'package:unitmma/screens/about_screen/about.dart';
+import 'package:unitmma/screens/cart_screen/cart_screen.dart';
 import 'package:unitmma/screens/product_screen/product.dart';
 
 import '../../constant_widgets/app_bar.dart';
@@ -16,7 +19,21 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
+class AppImage {
+  String? image;
+  String? path;
+  String? active;
+  String? inactive;
+
+// added '?'
+
+  AppImage({this.image, this.path, this.active, this.inactive});
+  // can also add 'required' keyword
+}
+
 class _HomeScreenState extends State<HomeScreen> {
+  bool _isVisible = true;
+
   @override
   Widget build(BuildContext context) {
     final scaffoldWidth = MediaQuery.of(context).size.width;
@@ -27,9 +44,89 @@ class _HomeScreenState extends State<HomeScreen> {
       "https://theunitmma.co.uk/wp-content/uploads/2022/02/IMG_0005-2-scaled.jpg",
       "https://theunitmma.co.uk/wp-content/uploads/2022/02/Kids-Class-Pose-1-scaled.jpg",
     ];
+    List<Map<String, dynamic>> images = [
+      {"name": "rithi"}
+    ];
+    images.add({"mahesh": "rithi"});
+    images.removeWhere((item) => item["mahesh"] == 'rithi');
+
+    visibilityController() async {
+      if (_isVisible) {
+        final prefs = await SharedPreferences.getInstance();
+        final success = await prefs.remove('action');
+      } else {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => SignInScreen(),
+          ),
+        );
+      }
+    }
+
+    getInfo() async {
+      final prefs = await SharedPreferences.getInstance();
+      final String? action = prefs.getString('action');
+
+      setState(() {
+        action != null ? _isVisible = true : _isVisible = false;
+      });
+    }
+
+    getInfo();
+
+    redirect() {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => CartScreen(),
+        ),
+      );
+    }
 
     return Scaffold(
-      appBar: appBar,
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: GlobalVariables.baseColor),
+        // leading: const Icon(
+        //   Icons.menu,
+        //   color: GlobalVariables.baseColor,
+        // ),
+        actions: [
+          Container(
+            width: 100,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                GestureDetector(
+                  onTap: () {},
+                  child: const Icon(Icons.search_rounded,
+                      color: GlobalVariables.baseColor),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => CartScreen(),
+                      ),
+                    );
+                  },
+                  child: const Icon(Icons.shopping_cart_checkout_outlined,
+                      color: GlobalVariables.baseColor),
+                ),
+              ],
+            ),
+          ),
+        ],
+        backgroundColor: GlobalVariables.white,
+        title: GestureDetector(
+          child: const Image(
+            width: 200,
+            height: 50,
+            image: NetworkImage(
+                "https://theunitmma.co.uk/wp-content/uploads/2021/09/cropped-the-unit-mixed-martial-arts.jpg",
+                scale: 0.5),
+          ),
+        ),
+        centerTitle: true,
+      ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -60,17 +157,24 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               },
             ),
-            ListTile(
-              leading: Icon(Icons.history),
-              title: Text('Order History'),
-            ),
-            ListTile(
-              leading: Icon(Icons.star_border),
-              title: Text('Subscription Details'),
-            ),
+            Visibility(
+                visible: _isVisible,
+                child: Column(
+                  children: const [
+                    ListTile(
+                      leading: Icon(Icons.history),
+                      title: Text('Order History'),
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.star_border),
+                      title: Text('Subscription Details'),
+                    ),
+                  ],
+                )),
             ListTile(
               leading: Icon(Icons.logout_outlined),
-              title: Text('Logout'),
+              title: Text(_isVisible ? "Logout" : "Login"),
+              onTap: visibilityController,
             ),
             ExpansionTile(
               title: Text('By Category'),

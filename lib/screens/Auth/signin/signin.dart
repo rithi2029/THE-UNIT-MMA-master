@@ -124,6 +124,17 @@ class _SignInScreenState extends State<SignInScreen> {
 
                                 print(action);
 
+                                Uri demo = Uri.parse(
+                                    "https://theunitmma.co.uk/wp-json/wp/v2/users/me");
+
+                                final test = await http.get(demo, headers: {
+                                  "Content-Type": "application/json",
+                                  "Accept": "application/json",
+                                  "Authorization": "Bearer ${data["token"]}"
+                                });
+                                var json = jsonDecode(test.body);
+                                print(json["id"]);
+
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) => ScaffoldScreen(),

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import "package:http/http.dart" as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unitmma/constants/global_variables.dart';
 import 'package:unitmma/screens/product_detail_screen/single_product_screen.dart';
 
@@ -16,6 +17,8 @@ class MyWidget extends StatefulWidget {
 }
 
 class _MyWidgetState extends State<MyWidget> {
+  var cartList = <dynamic>[];
+
   @override
   Widget build(BuildContext context) {
     Map<String, String> headers = {"Content-Type": "application/json"};
@@ -27,6 +30,47 @@ class _MyWidgetState extends State<MyWidget> {
           headers: headers);
       final result = jsonDecode(res.body);
       return result;
+    }
+
+    getOrder(val) async {
+      Map<String, dynamic> data = {
+        "id": val["id"],
+        "name": val["name"],
+        "price": val["price"],
+        "qty": 1,
+        "image": val["images"][0]["src"]
+      };
+      final prefs = await SharedPreferences.getInstance();
+      final String? cartDetails = prefs.getString('cart');
+      List cartDetail = jsonDecode(cartDetails!);
+
+      if (cartDetail.length == 0) {
+        setState(() {
+          if (cartDetail.any((item) => item["id"] == data["id"])) {
+            var data1 = [...cartList];
+            cartList = data1;
+          } else {
+            var data1 = [...cartList, data];
+            cartList = data1;
+          }
+        });
+        var newData = jsonEncode(cartList);
+        await prefs.setString('cart', newData);
+      } else {
+        setState(() {
+          if (cartDetail.any((item) => item["id"] == data["id"])) {
+            var data1 = [...cartDetail];
+            cartList = data1;
+          } else {
+            var data1 = [...cartDetail, data];
+            cartList = data1;
+          }
+        });
+        var newData = jsonEncode(cartList);
+        await prefs.setString('cart', newData);
+      }
+
+      print(cartDetail.length);
     }
 
     return FutureBuilder<dynamic>(
@@ -112,7 +156,9 @@ class _MyWidgetState extends State<MyWidget> {
                                     style:
                                         TextStyle(fontWeight: FontWeight.w600)),
                                 ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    getOrder(snapshot.data[index]);
+                                  },
                                   style: ElevatedButton.styleFrom(
                                       primary: GlobalVariables.baseColor,
                                       onPrimary: GlobalVariables.white),
