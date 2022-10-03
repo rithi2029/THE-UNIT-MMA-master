@@ -39,6 +39,8 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final scaffoldHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: GlobalVariables.white,
       appBar: AppBar(
@@ -48,7 +50,8 @@ class _SignInScreenState extends State<SignInScreen> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Center(
+          child: Container(
+            height: scaffoldHeight * 1,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -68,14 +71,14 @@ class _SignInScreenState extends State<SignInScreen> {
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
+                    Image(
+                        fit: BoxFit.fill,
+                        width: 200,
+                        image: NetworkImage(
+                          "https://theunitmma.co.uk/wp-content/uploads/2021/09/cropped-the-unit-mixed-martial-arts.jpg",
+                        )),
                   ],
                 ),
-                Image(
-                    fit: BoxFit.fill,
-                    width: 200,
-                    image: NetworkImage(
-                      "https://theunitmma.co.uk/wp-content/uploads/2021/09/cropped-the-unit-mixed-martial-arts.jpg",
-                    )),
                 SizedBox(
                   height: 20,
                 ),
@@ -122,8 +125,6 @@ class _SignInScreenState extends State<SignInScreen> {
                                 final String? action =
                                     prefs.getString('action');
 
-                                print(action);
-
                                 Uri demo = Uri.parse(
                                     "https://theunitmma.co.uk/wp-json/wp/v2/users/me");
 
@@ -133,7 +134,10 @@ class _SignInScreenState extends State<SignInScreen> {
                                   "Authorization": "Bearer ${data["token"]}"
                                 });
                                 var json = jsonDecode(test.body);
-                                print(json["id"]);
+                                await prefs.setInt('user_id', json["id"]);
+                                final int? user_id = prefs.getInt('user_id');
+
+                                print(user_id.toString());
 
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
@@ -141,7 +145,6 @@ class _SignInScreenState extends State<SignInScreen> {
                                   ),
                                 );
                               } else {
-                                print(data["message"]);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content:

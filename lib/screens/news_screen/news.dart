@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:unitmma/constant_widgets/app_bar.dart';
 import 'package:unitmma/scaffold/scaffold.dart';
+import 'package:unitmma/screens/cart_screen/cart_screen.dart';
 import 'package:unitmma/screens/home_screen/home.dart';
 import 'package:unitmma/screens/news_screen/widget/newa_list.dart';
 import 'package:unitmma/screens/product_screen/widgets/card.dart';
@@ -18,43 +19,57 @@ class NewsScreen extends StatelessWidget {
     final scaffoldWidth = MediaQuery.of(context).size.width;
     final scaffoldHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: appBar,
-      // ignore: prefer_const_constructors
-      body: Column(
-        children: [
-          Container(
-            color: GlobalVariables.baseColor,
-            width: scaffoldWidth,
-            height: scaffoldHeight * 0.06,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => ScaffoldScreen(),
-                        ),
-                      );
-                    },
-                    icon: const Icon(
-                      Icons.arrow_back_rounded,
-                      color: GlobalVariables.white,
-                    ),
-                  ),
-                  const Text(
-                    "News",
-                    style: TextStyle(
-                        color: GlobalVariables.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
-                  )
-                ],
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: GlobalVariables.baseColor),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => ScaffoldScreen(),
               ),
+            );
+          },
+          icon: const Icon(
+            Icons.arrow_back_rounded,
+            color: GlobalVariables.baseColor,
+          ),
+        ),
+        actions: [
+          Container(
+            width: 100,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                GestureDetector(
+                  onTap: () {},
+                  child: const Icon(Icons.search_rounded,
+                      color: GlobalVariables.baseColor),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => CartScreen(),
+                      ),
+                    );
+                  },
+                  child: const Icon(Icons.shopping_cart_checkout_outlined,
+                      color: GlobalVariables.baseColor),
+                ),
+              ],
             ),
           ),
+        ],
+        backgroundColor: GlobalVariables.white,
+        title: const Text(
+          "News",
+          style: TextStyle(color: GlobalVariables.baseColor),
+        ),
+        centerTitle: true,
+      ),
+      // ignore: prefer_const_constructors
+      body: Column(
+        children: const [
           NewsList(),
         ],
       ),

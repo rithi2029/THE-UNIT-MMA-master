@@ -1,5 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:convert';
+
+import 'package:badges/badges.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,6 +10,8 @@ import 'package:unitmma/constants/global_variables.dart';
 import 'package:unitmma/screens/Auth/signin/signin.dart';
 import 'package:unitmma/screens/about_screen/about.dart';
 import 'package:unitmma/screens/cart_screen/cart_screen.dart';
+import 'package:unitmma/screens/classes_screen/class.dart';
+import 'package:unitmma/screens/membership_screen/membership.dart';
 import 'package:unitmma/screens/product_screen/product.dart';
 
 import '../../constant_widgets/app_bar.dart';
@@ -34,10 +39,26 @@ class AppImage {
 class _HomeScreenState extends State<HomeScreen> {
   bool _isVisible = true;
 
+  int badgeCount = 0;
+
+  String sale_price = "--";
+
   @override
   Widget build(BuildContext context) {
     final scaffoldWidth = MediaQuery.of(context).size.width;
     final scaffoldHeight = MediaQuery.of(context).size.height;
+    initialState() async {
+      final prefs = await SharedPreferences.getInstance();
+
+      final String? cartDetails = prefs.getString('cart');
+
+      List cartDetail = jsonDecode(cartDetails!);
+      setState(() {
+        badgeCount = cartDetail.length;
+      });
+    }
+
+    initialState();
 
     List list = [
       "https://theunitmma.co.uk/wp-content/uploads/2022/02/IMG_0693-1.jpg",
@@ -54,6 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
       if (_isVisible) {
         final prefs = await SharedPreferences.getInstance();
         final success = await prefs.remove('action');
+        await prefs.remove("user_id");
       } else {
         Navigator.of(context).push(
           MaterialPageRoute(
@@ -108,8 +130,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     );
                   },
-                  child: const Icon(Icons.shopping_cart_checkout_outlined,
-                      color: GlobalVariables.baseColor),
+                  child: Badge(
+                    elevation: 0,
+                    badgeContent: Text("$badgeCount",
+                        style: TextStyle(color: GlobalVariables.white)),
+                    badgeColor: GlobalVariables.baseColor,
+                    child: const Icon(Icons.shopping_cart_outlined),
+                  ),
                 ),
               ],
             ),
@@ -143,10 +170,12 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             ListTile(
+              iconColor: GlobalVariables.baseColor,
               leading: Icon(Icons.home),
               title: Text('Home'),
             ),
             ListTile(
+              iconColor: GlobalVariables.baseColor,
               leading: Icon(Icons.info),
               title: Text('About'),
               onTap: () {
@@ -162,16 +191,24 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   children: const [
                     ListTile(
+                      iconColor: GlobalVariables.baseColor,
                       leading: Icon(Icons.history),
                       title: Text('Order History'),
                     ),
                     ListTile(
+                      iconColor: GlobalVariables.baseColor,
                       leading: Icon(Icons.star_border),
                       title: Text('Subscription Details'),
+                    ),
+                    ListTile(
+                      iconColor: GlobalVariables.baseColor,
+                      leading: Icon(Icons.cancel_outlined),
+                      title: Text('Remove Account'),
                     ),
                   ],
                 )),
             ListTile(
+              iconColor: GlobalVariables.baseColor,
               leading: Icon(Icons.logout_outlined),
               title: Text(_isVisible ? "Logout" : "Login"),
               onTap: visibilityController,
@@ -181,14 +218,31 @@ class _HomeScreenState extends State<HomeScreen> {
               controlAffinity: ListTileControlAffinity.trailing,
               children: <Widget>[
                 ListTile(
+                  iconColor: GlobalVariables.baseColor,
                   leading: Icon(Icons.class_),
                   title: Text('Classes'),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => ClassScreen(),
+                      ),
+                    );
+                  },
                 ),
                 ListTile(
+                  iconColor: GlobalVariables.baseColor,
                   leading: Icon(Icons.card_membership),
                   title: Text('Membership'),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => MembershipScreen(),
+                      ),
+                    );
+                  },
                 ),
                 ListTile(
+                  iconColor: GlobalVariables.baseColor,
                   leading: Icon(Icons.production_quantity_limits_outlined),
                   title: Text('Product'),
                   onTap: () {
@@ -246,31 +300,37 @@ class _HomeScreenState extends State<HomeScreen> {
                     }).toList(),
                   ),
                   HomeCards(
-                    url:
-                        "https://theunitmma.co.uk/wp-content/uploads/2022/02/IMG_0693-1.jpg",
-                    height: scaffoldHeight * 0.35,
-                    width: scaffoldWidth,
-                    title: "Classes",
-                    routing: () {},
-                  ),
-                  HomeCards(
-                    url:
-                        "https://theunitmma.co.uk/wp-content/uploads/2022/02/IMG_0005-2-scaled.jpg",
-                    height: scaffoldHeight * 0.35,
-                    width: scaffoldWidth,
-                    title: "Membership",
-                    routing: () {},
-                  ),
-                  HomeCards(
-                    url:
-                        "https://theunitmma.co.uk/wp-content/uploads/2022/02/Kids-Class-Pose-1-scaled.jpg",
-                    height: scaffoldHeight * 0.35,
+                    height: scaffoldHeight * 0.30,
                     width: scaffoldWidth,
                     title: "Products",
                     routing: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => ProductScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  HomeCards(
+                    height: scaffoldHeight * 0.30,
+                    width: scaffoldWidth,
+                    title: "Memberships",
+                    routing: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => MembershipScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  HomeCards(
+                    height: scaffoldHeight * 0.30,
+                    width: scaffoldWidth,
+                    title: "Classes",
+                    routing: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => ClassScreen(),
                         ),
                       );
                     },

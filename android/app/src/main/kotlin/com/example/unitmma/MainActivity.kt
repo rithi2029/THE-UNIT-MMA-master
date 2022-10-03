@@ -1,4 +1,4 @@
-package com.example.unitmma
+package com.theunitmma
 
 import io.flutter.embedding.android.FlutterActivity
 

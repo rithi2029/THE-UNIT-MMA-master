@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:unitmma/model/product_model.dart';
 import 'package:woocommerce_api/woocommerce_api.dart';
 import "package:http/http.dart" as http;
 

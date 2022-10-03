@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:unitmma/provider/product_view_model.dart';
 import 'package:unitmma/scaffold/scaffold.dart';
 import 'package:unitmma/screens/Auth/signin/signin.dart';
 import 'package:unitmma/screens/Auth/signup/signup.dart';
 import 'package:unitmma/screens/cart_screen/cart_screen.dart';
+import 'package:unitmma/screens/checkout_screen/check_out.dart';
 import 'package:unitmma/screens/home_screen/home.dart';
+import 'package:unitmma/screens/splash_screen/splace_screen.dart';
 
 void main() {
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (context) => ProductViewModel())
-    ],
-    child: const MyApp(),
-  ));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -33,7 +29,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SignInScreen(),
+      home: SplashScreen(),
     );
   }
 }

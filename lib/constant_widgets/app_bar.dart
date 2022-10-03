@@ -4,10 +4,13 @@ import 'package:unitmma/constants/global_variables.dart';
 
 var appBar = AppBar(
   iconTheme: IconThemeData(color: GlobalVariables.baseColor),
-  // leading: const Icon(
-  //   Icons.menu,
-  //   color: GlobalVariables.baseColor,
-  // ),
+  leading: IconButton(
+    onPressed: () {},
+    icon: const Icon(
+      Icons.menu,
+      color: GlobalVariables.baseColor,
+    ),
+  ),
   actions: [
     Container(
       width: 100,

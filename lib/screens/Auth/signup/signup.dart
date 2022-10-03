@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:unitmma/constants/global_variables.dart';
 import 'package:unitmma/scaffold/scaffold.dart';
 import 'package:unitmma/screens/Auth/signin/signin.dart';
@@ -35,6 +36,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final scaffoldHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: GlobalVariables.white,
       appBar: AppBar(
@@ -44,7 +47,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Center(
+          child: Container(
+            height: scaffoldHeight * 1,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -102,7 +106,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     "Content-Type":
                                         "application/json; charset=UTF-8"
                                   });
-                              print(res.statusCode);
+                              var data = jsonDecode(res.body);
+
+                              if (res.statusCode == 201) {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => SignInScreen(),
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content:
+                                        Html(data: data["message"], style: {
+                                      "strong": Style(
+                                        color:
+                                            Color.fromARGB(255, 255, 255, 255),
+                                      ),
+                                      "body": Style(
+                                        color:
+                                            Color.fromARGB(255, 255, 255, 255),
+                                      )
+                                    }),
+                                  ),
+                                );
+                              }
                             }
                           },
                           child: Container(
