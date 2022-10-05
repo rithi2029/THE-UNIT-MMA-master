@@ -178,7 +178,7 @@ class _MyWidgetState extends State<MyWidget> {
                                   color: GlobalVariables.baseColor,
                                 ),
                                 Container(
-                                  height: height * 0.15,
+                                  height: height * 0.18,
                                   width: double.infinity,
                                   margin: EdgeInsets.symmetric(
                                       horizontal: height * 0.03),

@@ -11,6 +11,7 @@ import 'package:unitmma/scaffold/scaffold.dart';
 import 'package:unitmma/screens/Auth/signup/signup.dart';
 import 'package:unitmma/screens/home_screen/home.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../constant_widgets/common_textbutton.dart';
 
@@ -178,7 +179,29 @@ class _SignInScreenState extends State<SignInScreen> {
                           ),
                         ),
                       ),
-                      Text("Forgot password"),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          textStyle: const TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                        onPressed: () async {
+                          Uri url = Uri.parse(
+                              "https://theunitmma.co.uk/index.php/my-account/lost-password/");
+                          var urllaunchable = await canLaunchUrl(
+                              url); //canLaunch is from url_launcher package
+                          if (!urllaunchable) {
+                            await launchUrl(
+                                url); //launch is from url_launcher package to launch URL
+                          } else {
+                            print("URL can't be launched.");
+                          }
+                        },
+                        child: const Text(
+                          'Forgot Password ?',
+                          style: TextStyle(color: GlobalVariables.baseColor),
+                        ),
+                      ),
                       TextButton(
                         style: TextButton.styleFrom(
                           textStyle: const TextStyle(

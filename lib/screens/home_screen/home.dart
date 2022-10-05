@@ -15,6 +15,7 @@ import 'package:unitmma/screens/membership_screen/membership.dart';
 import 'package:unitmma/screens/product_screen/product.dart';
 
 import '../../constant_widgets/app_bar.dart';
+import '../order_page/order_screen.dart';
 import 'widgets/expandable_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -189,11 +190,18 @@ class _HomeScreenState extends State<HomeScreen> {
             Visibility(
                 visible: _isVisible,
                 child: Column(
-                  children: const [
+                  children: [
                     ListTile(
                       iconColor: GlobalVariables.baseColor,
                       leading: Icon(Icons.history),
                       title: Text('Order History'),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => OrderScreen(),
+                          ),
+                        );
+                      },
                     ),
                     ListTile(
                       iconColor: GlobalVariables.baseColor,

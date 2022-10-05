@@ -356,6 +356,8 @@ class _CartScreenState extends State<CartScreen> {
                               child: Column(
                                 children: [
                                   Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       Text("Products"),
                                       Text("X " + _cartList.length.toString())
