@@ -1,16 +1,69 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:unitmma/constants/global_variables.dart';
 import 'package:unitmma/scaffold/scaffold.dart';
 import 'package:unitmma/screens/classes_screen/class_widget.dart';
 import 'package:unitmma/screens/membership_screen/widget/member_ship_widget.dart';
 
-class ClassScreen extends StatelessWidget {
+class ClassScreen extends StatefulWidget {
   const ClassScreen({Key? key}) : super(key: key);
+
+  @override
+  State<ClassScreen> createState() => _ClassScreenState();
+}
+
+class _ClassScreenState extends State<ClassScreen> {
+  final _currentDate = DateTime.now();
+  final _dayFormatter = DateFormat('dd');
+  final _monthFormatter = DateFormat('MMM');
+  final _DateFormatter = DateFormat('EEE');
+
+  DateTime _date = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
     final scaffoldWidth = MediaQuery.of(context).size.width;
     final scaffoldHeight = MediaQuery.of(context).size.height;
+    final dates = <Widget>[];
+    for (int i = 0; i < 7; i++) {
+      final date = _currentDate.add(Duration(days: i));
+      dates.add(GestureDetector(
+        onTap: () {
+          setState(() {
+            _date = date;
+          });
+        },
+        child: Container(
+          decoration: BoxDecoration(
+              border: Border.all(
+                  color: GlobalVariables.baseColor,
+                  width: 0.5,
+                  style: BorderStyle.solid)),
+          width: scaffoldWidth * 0.15,
+          child: Center(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(
+                _dayFormatter.format(date),
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                ),
+              ),
+              Text(
+                _DateFormatter.format(date),
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                ),
+              ),
+            ],
+          )),
+        ),
+      ));
+    }
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -47,26 +100,48 @@ class ClassScreen extends StatelessWidget {
         ],
         backgroundColor: GlobalVariables.white,
         title: const Text(
-          "Membership",
+          "Classes",
           style: TextStyle(color: GlobalVariables.baseColor),
         ),
         centerTitle: true,
       ),
       body: SizedBox(
         width: scaffoldWidth,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                width: scaffoldWidth,
-                height: scaffoldHeight * 1,
-                child: const Padding(
-                  padding: EdgeInsets.all(20.0),
-                  child: ClassWidget(),
-                ),
+        child: Column(
+          children: [
+            Container(
+              height: scaffoldHeight * 0.08,
+              width: scaffoldWidth,
+              child: Row(
+                children: [
+                  Container(
+                    width: scaffoldWidth * 0.15,
+                    color: Colors.pink,
+                  ),
+                  Flexible(
+                    child: Container(
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 7,
+                        itemBuilder: ((context, index) {
+                          return dates[index];
+                        }),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: scaffoldWidth * 0.15,
+                    color: Colors.pink,
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+            Expanded(
+              child: ClassWidget(
+                date: _date,
+              ),
+            ),
+          ],
         ),
       ),
     );

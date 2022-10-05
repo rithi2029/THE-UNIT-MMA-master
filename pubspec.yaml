@@ -49,6 +49,7 @@ dependencies:
   csc_picker: ^0.2.6
   flutter_launcher_icons: 
   path_provider: ^2.0.11
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

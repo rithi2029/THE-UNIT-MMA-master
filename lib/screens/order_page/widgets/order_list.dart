@@ -38,11 +38,8 @@ class _OrderListState extends State<OrderList> {
               "https://theunitmma.co.uk/wp-json/wc/v2/Orders?consumer_key=ck_dc42350e0d839a416bb73fdef9984544907a8fdb&consumer_secret=cs_023b27d43090a807fc43d77cda696a15cc87442e"),
           headers: headers);
       final result = jsonDecode(res.body);
-      setState() {
-        _orders = result;
-      }
 
-      return _orders;
+      return result;
     }
 
     return FutureBuilder<dynamic>(
