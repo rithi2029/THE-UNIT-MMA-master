@@ -241,7 +241,7 @@ class _CartScreenState extends State<CartScreen> {
                                         width: scaffoldWidth * 0.050,
                                       ),
                                       Container(
-                                        width: scaffoldWidth * 0.4,
+                                        width: scaffoldWidth * 0.45,
                                         child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceEvenly,
@@ -299,7 +299,8 @@ class _CartScreenState extends State<CartScreen> {
                                                 onPressed: () {
                                                   add(_cartList[index]);
                                                 },
-                                                backgroundColor: Colors.blue,
+                                                backgroundColor:
+                                                    GlobalVariables.baseColor,
                                                 child: Icon(Icons.add,
                                                     size: scaffoldHeight * 0.03,
                                                     color: Colors.white),
@@ -324,7 +325,8 @@ class _CartScreenState extends State<CartScreen> {
                                                       ? remove(_cartList[index])
                                                       : "";
                                                 },
-                                                backgroundColor: Colors.blue,
+                                                backgroundColor:
+                                                    GlobalVariables.baseColor,
                                                 child: Icon(Icons.remove,
                                                     size: scaffoldHeight * 0.03,
                                                     color: Colors.white),

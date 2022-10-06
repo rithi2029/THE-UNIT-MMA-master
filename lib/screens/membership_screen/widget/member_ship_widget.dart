@@ -20,6 +20,37 @@ class MemberShipWigdet extends StatefulWidget {
 
 class _MemberShipWigdetState extends State<MemberShipWigdet> {
   var cartList = <dynamic>[];
+  var _cat = [];
+  Map<String, String> headers = {"Content-Type": "application/json"};
+
+  getCategorie() async {
+    final res = await http.get(
+        Uri.parse(
+            "https://theunitmma.co.uk/wp-json/wc/v2/products?consumer_key=ck_dc42350e0d839a416bb73fdef9984544907a8fdb&consumer_secret=cs_023b27d43090a807fc43d77cda696a15cc87442e"),
+        headers: headers);
+    final result = jsonDecode(res.body);
+    for (var info in result) {
+      print(info["categories"][0]["name"]);
+      if (info["categories"].length != 0 &&
+          info["categories"][0]["name"] == "Memberships") {
+        setState(() {
+          _cat = [..._cat, info];
+        });
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getCategorie();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,17 +59,6 @@ class _MemberShipWigdetState extends State<MemberShipWigdet> {
 
     final height = scaffoldHeight * 0.4;
     final width = scaffoldWidth * 1;
-
-    Map<String, String> headers = {"Content-Type": "application/json"};
-
-    Future getProducts() async {
-      final res = await http.get(
-          Uri.parse(
-              "https://theunitmma.co.uk/wp-json/wc/v2/products?consumer_key=ck_dc42350e0d839a416bb73fdef9984544907a8fdb&consumer_secret=cs_023b27d43090a807fc43d77cda696a15cc87442e"),
-          headers: headers);
-      final result = jsonDecode(res.body);
-      return result;
-    }
 
     getOrder(val) async {
       if (val["type"] == "variable") {
@@ -77,7 +97,8 @@ class _MemberShipWigdetState extends State<MemberShipWigdet> {
               } else {
                 var data1 = [...cartList, data];
                 cartList = data1;
-                showSnackBar(context, "Item add to cart");
+                showSnackBar(
+                    context, "Subscription successfully added to cart ");
               }
             });
             var newData = jsonEncode(cartList);
@@ -91,7 +112,8 @@ class _MemberShipWigdetState extends State<MemberShipWigdet> {
               } else {
                 var data1 = [...cartDetail, data];
                 cartList = data1;
-                showSnackBar(context, "Item add to cart");
+                showSnackBar(
+                    context, "Subscription successfully added to cart ");
               }
             });
             var newData = jsonEncode(cartList);
@@ -101,158 +123,145 @@ class _MemberShipWigdetState extends State<MemberShipWigdet> {
       }
     }
 
-    return FutureBuilder<dynamic>(
-        future: getProducts(),
-        builder: (_, snapshot) {
-          if (snapshot.hasData) {
-            return GridView.builder(
-                shrinkWrap: true,
-                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 300,
-                  childAspectRatio: 2 / 3,
-                ),
-                itemCount: snapshot.data.length,
-                itemBuilder: (BuildContext ctx, index) {
-                  return Container(
-                    alignment: Alignment.center,
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                    child: LayoutBuilder(
-                      builder: ((context, constraints) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SingleProductScreen(
-                                    id: snapshot.data[index]["id"]),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(2),
-                            margin: EdgeInsets.all(width * 0.005),
-                            width: width * 0.47,
-                            height: height,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
-                                    color: GlobalVariables.baseColor,
-                                    width: 2,
-                                    style: BorderStyle.solid)),
-                            child: Column(
-                              children: [
-                                Container(
-                                  height: height * 0.5,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: CachedNetworkImage(
-                                      width: double.infinity,
-                                      height: height * 0.6,
-                                      fit: BoxFit.fill,
-                                      imageUrl: snapshot.data[index]["images"]
-                                          [0]["src"],
-                                      errorWidget: (context, url, error) =>
-                                          Icon(Icons.error),
-                                      placeholder: ((context, url) => Container(
-                                            child: Center(
-                                              child: CircularProgressIndicator
-                                                  .adaptive(
-                                                backgroundColor:
-                                                    Colors.pinkAccent,
-                                                strokeWidth: 1,
-                                              ),
-                                            ),
-                                          )),
-                                    ),
-                                  ),
-                                ),
-                                Divider(
-                                  height: 5,
-                                  color: GlobalVariables.baseColor,
-                                ),
-                                Container(
-                                  height: height * 0.2,
-                                  width: double.infinity,
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal: height * 0.03),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Flexible(
-                                        child: Text(
-                                          snapshot.data[index]["name"]
-                                              .toString(),
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              color: GlobalVariables.baseColor,
-                                              fontWeight: FontWeight.w800),
+    if (_cat.isNotEmpty) {
+      return GridView.builder(
+          shrinkWrap: true,
+          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 300,
+            childAspectRatio: 2 / 3,
+          ),
+          itemCount: _cat.length,
+          itemBuilder: (BuildContext ctx, index) {
+            return Container(
+              alignment: Alignment.center,
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(10)),
+              child: LayoutBuilder(
+                builder: ((context, constraints) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              SingleProductScreen(id: _cat[index]["id"]),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(2),
+                      margin: EdgeInsets.all(width * 0.005),
+                      width: width * 0.47,
+                      height: height,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                              color: GlobalVariables.baseColor,
+                              width: 2,
+                              style: BorderStyle.solid)),
+                      child: Column(
+                        children: [
+                          Container(
+                            height: height * 0.5,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: CachedNetworkImage(
+                                width: double.infinity,
+                                height: height * 0.6,
+                                fit: BoxFit.fill,
+                                imageUrl: _cat[index]["images"][0]["src"],
+                                errorWidget: (context, url, error) =>
+                                    Icon(Icons.error),
+                                placeholder: ((context, url) => Container(
+                                      child: Center(
+                                        child:
+                                            CircularProgressIndicator.adaptive(
+                                          backgroundColor: Colors.pinkAccent,
+                                          strokeWidth: 1,
                                         ),
                                       ),
-                                      Text(
-                                        "Price: ${GlobalVariables.currency + snapshot.data[index]["price"]}",
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            color: GlobalVariables.black,
-                                            fontWeight: FontWeight.w800),
-                                      ),
-                                    ],
+                                    )),
+                              ),
+                            ),
+                          ),
+                          Divider(
+                            height: 5,
+                            color: GlobalVariables.baseColor,
+                          ),
+                          Container(
+                            height: height * 0.2,
+                            width: double.infinity,
+                            margin:
+                                EdgeInsets.symmetric(horizontal: height * 0.03),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    _cat[index]["name"].toString(),
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: GlobalVariables.baseColor,
+                                        fontWeight: FontWeight.w800),
                                   ),
                                 ),
-                                Divider(
-                                  height: 3,
-                                  color: GlobalVariables.baseColor,
+                                Text(
+                                  "Price: ${GlobalVariables.currency + _cat[index]["price"]}",
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: GlobalVariables.black,
+                                      fontWeight: FontWeight.w800),
                                 ),
-                                Expanded(
-                                  child: Container(
-                                    width: double.infinity,
-                                    child: ElevatedButton(
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.resolveWith(
-                                                (states) {
-                                          // If the button is pressed, return green, otherwise blue
-                                          if (states.contains(
-                                              MaterialState.pressed)) {
-                                            return Colors.blue;
-                                          }
-                                          return GlobalVariables.baseColor;
-                                        }),
-                                        elevation: MaterialStateProperty
-                                            .resolveWith<double?>(
-                                                (Set<MaterialState> states) {
-                                          if (states.contains(
-                                              MaterialState.pressed)) return 20;
-                                          return null;
-                                        }),
-                                      ),
-                                      onPressed: () {
-                                        getOrder(snapshot.data[index]);
-                                      },
-                                      child: Text('Subscripe'),
-                                    ),
-                                  ),
-                                )
                               ],
                             ),
                           ),
-                        );
-                      }),
+                          Divider(
+                            height: 3,
+                            color: GlobalVariables.baseColor,
+                          ),
+                          Expanded(
+                            child: Container(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.resolveWith(
+                                          (states) {
+                                    // If the button is pressed, return green, otherwise blue
+                                    if (states
+                                        .contains(MaterialState.pressed)) {
+                                      return Colors.blue;
+                                    }
+                                    return GlobalVariables.baseColor;
+                                  }),
+                                  elevation: MaterialStateProperty.resolveWith<
+                                      double?>((Set<MaterialState> states) {
+                                    if (states.contains(MaterialState.pressed))
+                                      return 20;
+                                    return null;
+                                  }),
+                                ),
+                                onPressed: () {
+                                  getOrder(_cat[index]);
+                                },
+                                child: Text('Subscripe'),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   );
-                });
-          } else if (snapshot.hasError) {
-            return Text('${snapshot.error}');
-          }
-
-          // By default, show a loading spinner.
-          return const SpinKitDoubleBounce(
-            color: Color.fromARGB(255, 194, 109, 109),
-            size: 50.0,
-          );
-        });
+                }),
+              ),
+            );
+          });
+    } else {
+      return const SpinKitDoubleBounce(
+        color: Color.fromARGB(255, 194, 109, 109),
+        size: 50.0,
+      );
+    }
   }
 }

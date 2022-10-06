@@ -499,13 +499,16 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                  primary: GlobalVariables.baseColor,
-                                  onPrimary: GlobalVariables.white),
-                              child: const Text("Buy Now"),
-                            ),
+                            snapshot.data["categories"][0]["name"] !=
+                                    "Memberships"
+                                ? ElevatedButton(
+                                    onPressed: () {},
+                                    style: ElevatedButton.styleFrom(
+                                        primary: GlobalVariables.baseColor,
+                                        onPrimary: GlobalVariables.white),
+                                    child: const Text("Buy Now"),
+                                  )
+                                : Text(""),
                             ElevatedButton(
                               onPressed: () async {
                                 final prefs =

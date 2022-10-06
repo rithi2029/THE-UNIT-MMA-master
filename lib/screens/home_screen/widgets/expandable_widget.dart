@@ -46,8 +46,6 @@ class _HomeCardsState extends State<HomeCards> {
         });
       }
     }
-
-    return "rithi";
   }
 
   @override
