@@ -40,6 +40,7 @@ class _ClassWidgetState extends State<ClassWidget> {
         _eventDays = [];
         _startTimeStamp = [];
         _cat = [];
+        eventList = [];
       });
     }
 
@@ -164,7 +165,19 @@ class _ClassWidgetState extends State<ClassWidget> {
         }
       }
     }
-    for (var i = 0; i < fillteredList.length; i++) {}
+    for (var i = 0; i < fillteredList.length; i++) {
+      var match = fillteredList[i]["dates"].where(
+          (m) => m == DateFormat('MMMM dd, ' 'yyyy').format(widget.date));
+      if (match.isNotEmpty) {
+        setState(() {
+          var seen = Set<String>();
+
+          eventList = [...eventList, fillteredList[i]];
+          eventList =
+              eventList.where((numone) => seen.add(numone.toString())).toList();
+        });
+      }
+    }
   }
 
   @override
@@ -198,11 +211,11 @@ class _ClassWidgetState extends State<ClassWidget> {
 
     return ListView.builder(
       scrollDirection: Axis.vertical,
-      itemCount: fillteredList.length,
+      itemCount: eventList.length,
       itemBuilder: ((context, index) {
         return Column(
           children: [
-            Card(child: Text(fillteredList[index].toString())),
+            Card(child: Text(eventList[index].toString())),
           ],
         );
       }),
