@@ -35,6 +35,9 @@ class _ClassScreenState extends State<ClassScreen> {
         },
         child: Container(
           decoration: BoxDecoration(
+              color: _date == date
+                  ? Colors.white
+                  : Color.fromARGB(255, 235, 229, 229),
               border: Border.all(
                   color: GlobalVariables.baseColor,
                   width: 0.5,
@@ -46,17 +49,31 @@ class _ClassScreenState extends State<ClassScreen> {
             children: [
               Text(
                 _dayFormatter.format(date),
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                ),
+                style: _date == date
+                    ? TextStyle(
+                        color: GlobalVariables.baseColor,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      )
+                    : TextStyle(
+                        color: GlobalVariables.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),
               ),
               Text(
                 _DateFormatter.format(date),
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                ),
+                style: _date == date
+                    ? TextStyle(
+                        color: GlobalVariables.baseColor,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      )
+                    : TextStyle(
+                        color: GlobalVariables.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),
               ),
             ],
           )),
@@ -114,9 +131,16 @@ class _ClassScreenState extends State<ClassScreen> {
               width: scaffoldWidth,
               child: Row(
                 children: [
-                  Container(
-                    width: scaffoldWidth * 0.15,
-                    color: Colors.pink,
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _date = DateTime.now();
+                      });
+                    },
+                    child: Container(
+                      width: scaffoldWidth * 0.15,
+                      child: Center(child: Icon(Icons.person_outline)),
+                    ),
                   ),
                   Flexible(
                     child: Container(
@@ -129,9 +153,11 @@ class _ClassScreenState extends State<ClassScreen> {
                       ),
                     ),
                   ),
-                  Container(
-                    width: scaffoldWidth * 0.15,
-                    color: Colors.pink,
+                  GestureDetector(
+                    child: Container(
+                      width: scaffoldWidth * 0.15,
+                      child: Center(child: Icon(Icons.today_outlined)),
+                    ),
                   ),
                 ],
               ),

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -199,27 +200,69 @@ class _ClassWidgetState extends State<ClassWidget> {
     final scaffoldHeight = MediaQuery.of(context).size.height;
     Map<String, String> headers = {"Content-Type": "application/json"};
 
-    Future getProducts() async {
-      final res = await http.get(
-          Uri.parse(
-              "https://theunitmma.co.uk/wp-json/foo-event-api/getallevents?consumer_key=ck_dc42350e0d839a416bb73fdef9984544907a8fdb&consumer_secret=cs_023b27d43090a807fc43d77cda696a15cc87442e"),
-          headers: headers);
-      final result = jsonDecode(res.body);
-
-      return result;
+    if (eventList.isNotEmpty) {
+      return ListView.builder(
+        scrollDirection: Axis.vertical,
+        itemCount: eventList.length,
+        itemBuilder: ((context, index) {
+          return Container(
+            height: scaffoldHeight * 0.15,
+            child: Card(
+                elevation: 5,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: scaffoldWidth * 0.65,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                              eventList[index]["name"],
+                              style: TextStyle(
+                                color: GlobalVariables.baseColor,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              ),
+                            ),
+                            Text(DateFormat('MMMM dd, ' 'yyyy')
+                                .format(widget.date)),
+                          ],
+                        ),
+                      ),
+                      Flexible(
+                        child: Container(
+                          child: CachedNetworkImage(
+                            width: double.infinity,
+                            fit: BoxFit.fill,
+                            imageUrl: eventList[index]["img"],
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
+                            placeholder: ((context, url) => Container(
+                                  child: const Center(
+                                    child: CircularProgressIndicator.adaptive(
+                                      backgroundColor: Colors.pinkAccent,
+                                      strokeWidth: 1,
+                                    ),
+                                  ),
+                                )),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )),
+          );
+        }),
+      );
+      ;
+    } else {
+      return Center(
+          child: Text(
+              "No Classes Available on ${DateFormat('MMMM dd, ' 'yyyy').format(widget.date)}"));
     }
-
-    return ListView.builder(
-      scrollDirection: Axis.vertical,
-      itemCount: eventList.length,
-      itemBuilder: ((context, index) {
-        return Column(
-          children: [
-            Card(child: Text(eventList[index].toString())),
-          ],
-        );
-      }),
-    );
 
     // By default, show a loading spinner.
   }
