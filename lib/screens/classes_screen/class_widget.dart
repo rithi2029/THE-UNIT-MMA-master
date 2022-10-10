@@ -8,6 +8,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import "package:http/http.dart" as http;
 import 'package:intl/intl.dart';
 import 'package:unitmma/constants/global_variables.dart';
+import 'package:unitmma/screens/classes_screen/class/class_details.dart';
 
 class ClassWidget extends StatefulWidget {
   final DateTime date;
@@ -29,6 +30,8 @@ class _ClassWidgetState extends State<ClassWidget> {
   var _startTimeStamp = [];
   List<Map<String, dynamic>> fillteredList = [];
   List<Map<String, dynamic>> eventList = [];
+  List<Map<String, dynamic>> _classTiming = [];
+  var Time = [];
 
   Map<String, String> headers = {"Content-Type": "application/json"};
 
@@ -42,6 +45,8 @@ class _ClassWidgetState extends State<ClassWidget> {
         _startTimeStamp = [];
         _cat = [];
         eventList = [];
+        _classTiming = [];
+        Time = [];
       });
     }
 
@@ -73,6 +78,28 @@ class _ClassWidgetState extends State<ClassWidget> {
                   ];
                 }
               }
+            });
+          }
+          if (result[item]["meta_data"][i]["key"] ==
+              "unit_mma_daywise_schedule") {
+            result[item]["meta_data"][i]["value"].values.forEach((e) {
+              setState(() {
+                var seen = Set<String>();
+
+                _classTiming = [
+                  ..._classTiming,
+                  {
+                    "day": day[int.parse(e["unit_mma_sch_day"])],
+                    "timing": {
+                      "from": e["unit_mma_sch_frm_time"],
+                      "to": e["unit_mma_sch_to_time"]
+                    }
+                  }
+                ];
+                _classTiming = _classTiming
+                    .where((numone) => seen.add(numone.toString()))
+                    .toList();
+              });
             });
           }
 
@@ -125,8 +152,9 @@ class _ClassWidgetState extends State<ClassWidget> {
                 }
               }
             });
+
             var data = [];
-            for (int j = 0; data.length < _eventDays[item]; j++) {
+            for (int j = 0; j < _eventDays[item]; j++) {
               final date = DateTime.fromMillisecondsSinceEpoch(
                       _startTimeStamp[item] * 1000)
                   .add(Duration(days: j));
@@ -166,6 +194,7 @@ class _ClassWidgetState extends State<ClassWidget> {
         }
       }
     }
+
     for (var i = 0; i < fillteredList.length; i++) {
       var match = fillteredList[i]["dates"].where(
           (m) => m == DateFormat('MMMM dd, ' 'yyyy').format(widget.date));
@@ -178,6 +207,20 @@ class _ClassWidgetState extends State<ClassWidget> {
               eventList.where((numone) => seen.add(numone.toString())).toList();
         });
       }
+    }
+    for (var i = 0; i < _classTiming.length; i++) {
+      print(_classTiming[i]["day"]);
+      setState(() {
+        if (_classTiming[i]["day"] == _DateFormatter.format(widget.date)) {
+          var seen = Set<String>();
+
+          Time = [
+            ...Time,
+            [_classTiming[i]["timing"]["from"], _classTiming[i]["timing"]["to"]]
+          ];
+          Time = Time.where((numone) => seen.add(numone.toString())).toList();
+        }
+      });
     }
   }
 
@@ -205,59 +248,68 @@ class _ClassWidgetState extends State<ClassWidget> {
         scrollDirection: Axis.vertical,
         itemCount: eventList.length,
         itemBuilder: ((context, index) {
-          return Container(
-            height: scaffoldHeight * 0.15,
-            child: Card(
-                elevation: 5,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: scaffoldWidth * 0.65,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text(
-                              eventList[index]["name"],
-                              style: TextStyle(
-                                color: GlobalVariables.baseColor,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
+          return GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ClassDetail(
+                      data: {"info": eventList[index], "timing": Time}),
+                ),
+              );
+            },
+            child: Container(
+              height: scaffoldHeight * 0.15,
+              child: Card(
+                  elevation: 5,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: scaffoldWidth * 0.65,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text(
+                                eventList[index]["name"],
+                                style: TextStyle(
+                                  color: GlobalVariables.baseColor,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16,
+                                ),
                               ),
-                            ),
-                            Text(DateFormat('MMMM dd, ' 'yyyy')
-                                .format(widget.date)),
-                          ],
-                        ),
-                      ),
-                      Flexible(
-                        child: Container(
-                          child: CachedNetworkImage(
-                            width: double.infinity,
-                            fit: BoxFit.fill,
-                            imageUrl: eventList[index]["img"],
-                            errorWidget: (context, url, error) =>
-                                Icon(Icons.error),
-                            placeholder: ((context, url) => Container(
-                                  child: const Center(
-                                    child: CircularProgressIndicator.adaptive(
-                                      backgroundColor: Colors.pinkAccent,
-                                      strokeWidth: 1,
-                                    ),
-                                  ),
-                                )),
+                              Text(DateFormat('MMMM dd, ' 'yyyy')
+                                  .format(widget.date)),
+                            ],
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                )),
+                        Flexible(
+                          child: Container(
+                            child: CachedNetworkImage(
+                              width: double.infinity,
+                              fit: BoxFit.fill,
+                              imageUrl: eventList[index]["img"],
+                              errorWidget: (context, url, error) =>
+                                  Icon(Icons.error),
+                              placeholder: ((context, url) => Container(
+                                    child: const Center(
+                                      child: CircularProgressIndicator.adaptive(
+                                        backgroundColor: Colors.pinkAccent,
+                                        strokeWidth: 1,
+                                      ),
+                                    ),
+                                  )),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )),
+            ),
           );
         }),
       );
-      ;
     } else {
       return Center(
           child: Text(
