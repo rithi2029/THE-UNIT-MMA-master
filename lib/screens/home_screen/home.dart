@@ -16,6 +16,7 @@ import 'package:unitmma/screens/product_screen/product.dart';
 
 import '../../constant_widgets/app_bar.dart';
 import '../order_page/order_screen.dart';
+import '../search_screen/search_screen.dart';
 import 'widgets/expandable_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -119,7 +120,13 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => SearchScreen(),
+                      ),
+                    );
+                  },
                   child: const Icon(Icons.search_rounded,
                       color: GlobalVariables.baseColor),
                 ),

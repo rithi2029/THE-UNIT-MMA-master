@@ -10,6 +10,7 @@ import 'package:unitmma/screens/product_screen/widgets/card.dart';
 import 'package:unitmma/screens/product_screen/widgets/grid_product_list.dart';
 
 import '../../constants/global_variables.dart';
+import '../search_screen/search_screen.dart';
 
 class NewsScreen extends StatelessWidget {
   const NewsScreen({Key? key}) : super(key: key);
@@ -41,7 +42,13 @@ class NewsScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => SearchScreen(),
+                      ),
+                    );
+                  },
                   child: const Icon(Icons.search_rounded,
                       color: GlobalVariables.baseColor),
                 ),

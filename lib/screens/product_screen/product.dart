@@ -8,6 +8,7 @@ import 'package:unitmma/screens/cart_screen/cart_screen.dart';
 import 'package:unitmma/screens/product_screen/widgets/grid_product_list.dart';
 
 import '../../constants/global_variables.dart';
+import '../search_screen/search_screen.dart';
 
 class ProductScreen extends StatefulWidget {
   const ProductScreen({Key? key}) : super(key: key);
@@ -23,7 +24,6 @@ class _ProductScreenState extends State<ProductScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print("object");
   }
 
   @override
@@ -66,7 +66,13 @@ class _ProductScreenState extends State<ProductScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => SearchScreen(),
+                      ),
+                    );
+                  },
                   child: const Icon(Icons.search_rounded,
                       color: GlobalVariables.baseColor),
                 ),

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:unitmma/constants/global_variables.dart';
@@ -15,6 +16,24 @@ class ClassDetail extends StatefulWidget {
 }
 
 class _ClassDetailState extends State<ClassDetail> {
+  DateTime _selectedDate = DateTime.now();
+  void _presentDatePicker() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(Duration(days: 7)),
+    ).then((pickedDate) {
+      if (pickedDate == null) {
+        return;
+      }
+      setState(() {
+        _selectedDate = pickedDate;
+      });
+    });
+    print('...');
+  }
+
   @override
   Widget build(BuildContext context) {
     final scaffoldWidth = MediaQuery.of(context).size.width;
@@ -68,11 +87,68 @@ class _ClassDetailState extends State<ClassDetail> {
           children: [
             Container(
               height: scaffoldHeight * 0.3,
-              color: Colors.pink,
+              child: CachedNetworkImage(
+                width: double.infinity,
+                height: scaffoldHeight * 0.3,
+                fit: BoxFit.fill,
+                imageUrl: widget.data["info"]["img"].toString(),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+                placeholder: ((context, url) => Container(
+                      child: const Center(
+                        child: CircularProgressIndicator.adaptive(
+                          backgroundColor: Colors.pinkAccent,
+                          strokeWidth: 1,
+                        ),
+                      ),
+                    )),
+              ),
             ),
-            Container(
-              height: scaffoldHeight * 0.4,
-              color: Color.fromARGB(255, 57, 51, 53),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: scaffoldHeight * 0.4,
+                width: scaffoldWidth,
+                alignment: Alignment.topLeft,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.data["info"]["name"],
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: GlobalVariables.baseColor,
+                          fontWeight: FontWeight.w800),
+                    ),
+                    Text(
+                      "Price : ${widget.data["info"]["price"]}",
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: GlobalVariables.baseColor,
+                          fontWeight: FontWeight.w800),
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Text(
+                            _selectedDate == null
+                                ? 'No Date Chosen!'
+                                : 'Choose Date: ${DateFormat.yMd().format(_selectedDate)}',
+                          ),
+                        ),
+                        ElevatedButton(
+                          child: Text(
+                            'Choose Date',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          onPressed: _presentDatePicker,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ),
             Expanded(
               child: Container(child: Text(widget.data.toString())),

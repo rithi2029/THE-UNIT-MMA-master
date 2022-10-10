@@ -9,6 +9,7 @@ import 'package:unitmma/screens/membership_screen/widget/member_ship_widget.dart
 import 'package:unitmma/screens/product_screen/widgets/grid_product_list.dart';
 
 import '../../constants/global_variables.dart';
+import '../search_screen/search_screen.dart';
 
 class MembershipScreen extends StatefulWidget {
   const MembershipScreen({Key? key}) : super(key: key);
@@ -68,7 +69,13 @@ class _MembershipScreenState extends State<MembershipScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => SearchScreen(),
+                      ),
+                    );
+                  },
                   child: const Icon(Icons.search_rounded,
                       color: GlobalVariables.baseColor),
                 ),

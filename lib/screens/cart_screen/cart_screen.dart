@@ -210,7 +210,7 @@ class _CartScreenState extends State<CartScreen> {
           : Column(
               children: [
                 Container(
-                  height: scaffoldHeight * 0.72,
+                  height: scaffoldHeight * 0.67,
                   child: SingleChildScrollView(
                     physics: ScrollPhysics(),
                     child: Column(
@@ -353,19 +353,55 @@ class _CartScreenState extends State<CartScreen> {
                         Padding(
                           padding: const EdgeInsets.all(10),
                           child: Container(
+                            height: scaffoldHeight * 0.1,
+                            color: Colors.grey,
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      Text("Products"),
-                                      Text("X " + _cartList.length.toString())
+                                      Text(
+                                        "Products",
+                                        style: TextStyle(
+                                          color: GlobalVariables.white,
+                                        ),
+                                      ),
+                                      Text(
+                                        "X " + _cartList.length.toString(),
+                                        style: TextStyle(
+                                          color: GlobalVariables.white,
+                                        ),
+                                      )
                                     ],
                                   ),
-                                  Row(),
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text(
+                                        "Total",
+                                        style: TextStyle(
+                                          color: GlobalVariables.white,
+                                        ),
+                                      ),
+                                      Text(
+                                        GlobalVariables.currency +
+                                            _total.toString(),
+                                        style: TextStyle(
+                                          color: GlobalVariables.white,
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ],
                               ),
                             ),
@@ -425,7 +461,9 @@ class _CartScreenState extends State<CartScreen> {
                               onPressed: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) => ShippingScreen(),
+                                    builder: (context) => ShippingScreen(
+                                      total: _total,
+                                    ),
                                   ),
                                 );
                               },

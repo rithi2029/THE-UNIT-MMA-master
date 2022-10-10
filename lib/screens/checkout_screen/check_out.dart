@@ -279,26 +279,29 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                           style: TextStyle(color: Colors.black),
                         ),
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          getCheckoutData();
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            getCheckoutData();
 
-                          if (_chechOutForm.currentState!.validate()) {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    PaymentScreen(data: updatePayload),
-                              ),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text("One or more fields are em"),
-                              ),
-                            );
-                          }
-                        },
-                        child: Text("CONTINUE TO SHIPPING"),
+                            if (_chechOutForm.currentState!.validate()) {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      PaymentScreen(data: updatePayload),
+                                ),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text("One or more fields are em"),
+                                ),
+                              );
+                            }
+                          },
+                          child: Text("CONTINUE TO SHIPPING"),
+                        ),
                       ),
                     ],
                   )

@@ -176,6 +176,7 @@ class _ClassWidgetState extends State<ClassWidget> {
               "id": result[item]["id"],
               "name": result[item]["name"],
               "img": result[item]["images"][0]["src"],
+              "price": result[item]["price"],
               "availableDays": availableDays[item],
               "eventDays": _eventDays[item],
               "startTimeStamp": DateTime.fromMillisecondsSinceEpoch(
